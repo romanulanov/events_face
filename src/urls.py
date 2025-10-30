@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from events.views import EventListAPIView  
+from events.views import EventListAPIView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    path("api/auth/", include("authapp.urls")),
     path("api/events", EventListAPIView.as_view(), name="api-events-list"),
 ]
