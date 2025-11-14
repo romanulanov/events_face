@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "events",
     "rest_framework_simplejwt",
     "authapp",
+    "outbox",
 ]
 
 MIDDLEWARE = [

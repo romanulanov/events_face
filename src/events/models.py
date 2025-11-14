@@ -1,5 +1,7 @@
 import uuid
 from django.db import models
+from django.core.validators import MaxLengthValidator, EmailValidator
+
 
 class Venue(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -34,3 +36,16 @@ class Event(models.Model):
 
     def __str__(self):
         return f"{self.name} @ {self.event_time.isoformat()}"
+
+
+class EventRegistration(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="registrations")
+    full_name = models.CharField(max_length=128, validators=[MaxLengthValidator(128)])
+    email = models.EmailField(validators=[EmailValidator()])
+    confirmation_code = models.CharField(max_length=12)
+    created_at = models.DateTimeField(auto_now_add=True)
+    confirmed = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ("event", "email")
