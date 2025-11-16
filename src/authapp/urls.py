@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import RegisterAPIView, LoginAPIView, TokenRefreshCustomView, \
-    LogoutAPIView
+
+from .views import (LoginAPIView, LogoutAPIView, RegisterAPIView,
+                    TokenRefreshCustomView)
 
 urlpatterns = [
     path("register", RegisterAPIView.as_view(), name="auth-register"),

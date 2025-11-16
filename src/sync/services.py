@@ -1,7 +1,8 @@
-import time
 import logging
-import requests
+import time
 from typing import Iterable, Optional
+
+import requests
 from django.conf import settings
 from django.utils.dateparse import parse_datetime
 
@@ -9,7 +10,11 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_TIMEOUT = getattr(settings, "EVENTS_PROVIDER_TIMEOUT", 10)
 MAX_RETRIES = getattr(settings, "EVENTS_PROVIDER_MAX_RETRIES", 3)
-BASE_URL = getattr(settings, "EVENTS_PROVIDER_API", "https://events.k3scluster.tech/api/events/")
+BASE_URL = getattr(
+    settings,
+    "EVENTS_PROVIDER_API",
+    "https://events.k3scluster.tech/api/events/"
+    )
 
 
 def _get_with_retries(url: str, params: dict = None) -> requests.Response:
@@ -23,14 +28,27 @@ def _get_with_retries(url: str, params: dict = None) -> requests.Response:
             return resp
         except requests.RequestException as exc:
             if attempt >= MAX_RETRIES:
-                logger.exception("Failed to fetch %s after %d attempts", url, attempt)
+                logger.exception(
+                    "Failed to fetch %s after %d attempts",
+                    url,
+                    attempt
+                )
                 raise
             backoff = 2 ** (attempt - 1)
-            logger.warning("Request to %s failed (attempt %d). Backoff %ds. Error: %s", url, attempt, backoff, exc)
+            logger.warning(
+                "Request to %s failed (attempt %d). Backoff %ds. Error: %s",
+                url,
+                attempt,
+                backoff,
+                exc
+            )
             time.sleep(backoff)
 
 
-def _iter_events_from_provider(start_url: str, params: Optional[dict] = None) -> Iterable[dict]:
+def _iter_events_from_provider(
+        start_url: str,
+        params: Optional[dict] = None
+     ) -> Iterable[dict]:
     url = start_url
     local_params = dict(params or {})
     while url:
@@ -56,14 +74,21 @@ def _iter_events_from_provider(start_url: str, params: Optional[dict] = None) ->
             if found:
                 url = None
             else:
-                raise ValueError("Unknown payload format from provider: expected list or {'results': [...]}")
+                raise ValueError(
+                    "Unknown payload format from provider: expected list or "
+                    "{'results': [...]}."
+                )
 
 
 def _parse_event_payload(payload: dict) -> dict:
     item = {}
     item["id"] = payload.get("id")
     item["name"] = payload.get("name") or payload.get("title") or ""
-    ev_time_raw = payload.get("event_time") or payload.get("date") or payload.get("start")
+    ev_time_raw = (
+        payload.get("event_time")
+        or payload.get("date")
+        or payload.get("start")
+    )
     if ev_time_raw:
         item["event_time"] = parse_datetime(ev_time_raw)
     else:

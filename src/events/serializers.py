@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import Event, EventRegistration
 
 
@@ -19,9 +20,16 @@ class EventRegistrationSerializer(serializers.ModelSerializer):
         event = self.context["event"]
 
         if event.status != "open":
-            raise serializers.ValidationError("Registration is closed for this event.")
+            raise serializers.ValidationError(
+                "Registration is closed for this event."
+            )
 
-        if EventRegistration.objects.filter(event=event, email=attrs["email"]).exists():
-            raise serializers.ValidationError("This email is already registered for this event.")
+        if EventRegistration.objects.filter(
+            event=event,
+            email=attrs["email"]
+        ).exists():
+            raise serializers.ValidationError(
+                "This email is already registered for this event."
+            )
 
         return attrs

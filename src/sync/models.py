@@ -9,10 +9,13 @@ class SyncResult(models.Model):
     changed_to = models.DateTimeField(null=True, blank=True)
     added = models.IntegerField(default=0)
     updated = models.IntegerField(default=0)
-    raw_response_summary = models.TextField(blank=True)  # опционально — для диагностики
+    raw_response_summary = models.TextField(blank=True)
 
     class Meta:
         ordering = ("-started_at",)
 
     def __str__(self):
-        return f"Sync {self.started_at.isoformat()} added={self.added} updated={self.updated} full={self.full_sync}"
+        return (
+            f"Sync {self.started_at.isoformat()} "
+            f"added={self.added} updated={self.updated} full={self.full_sync}"
+        )

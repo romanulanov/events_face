@@ -1,11 +1,11 @@
-from django.core.management.base import BaseCommand
-from django.db import transaction
-from outbox.models import OutboxMessage
-
 import json
 import logging
 import time
 
+from django.core.management.base import BaseCommand
+from django.db import transaction
+
+from outbox.models import OutboxMessage
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,10 @@ class Command(BaseCommand):
 
                 for msg in messages:
                     try:
-                        print(f"Sending topic={msg.topic} payload={json.dumps(msg.payload, ensure_ascii=False)}")
+                        print(
+                            f"Sending topic={msg.topic} payload="
+                            f"{json.dumps(msg.payload, ensure_ascii=False)}"
+                        )
 
                         msg.mark_as_sent()
                     except Exception as e:

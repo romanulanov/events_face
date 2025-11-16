@@ -1,6 +1,7 @@
 import uuid
+
+from django.core.validators import EmailValidator, MaxLengthValidator
 from django.db import models
-from django.core.validators import MaxLengthValidator, EmailValidator
 
 
 class Venue(models.Model):
@@ -22,9 +23,21 @@ class Event(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(verbose_name="название", max_length=255)
-    event_time = models.DateTimeField(verbose_name="дата проведения мероприятия")
-    status = models.CharField(verbose_name="статус", max_length=10, choices=Status.choices, default=Status.OPEN)
-    venue = models.ForeignKey(Venue, null=True, blank=True, on_delete=models.SET_NULL, related_name="events")
+    event_time = models.DateTimeField(verbose_name="дата проведения \
+                                      мероприятия")
+    status = models.CharField(
+        verbose_name="статус",
+        max_length=10,
+        choices=Status.choices,
+        default=Status.OPEN
+    )
+    venue = models.ForeignKey(
+        Venue,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="events"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -40,8 +53,15 @@ class Event(models.Model):
 
 class EventRegistration(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="registrations")
-    full_name = models.CharField(max_length=128, validators=[MaxLengthValidator(128)])
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name="registrations"
+    )
+    full_name = models.CharField(
+        max_length=128,
+        validators=[MaxLengthValidator(128)]
+    )
     email = models.EmailField(validators=[EmailValidator()])
     confirmation_code = models.CharField(max_length=12)
     created_at = models.DateTimeField(auto_now_add=True)
