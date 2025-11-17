@@ -20,6 +20,15 @@ ALLOWED_HOSTS = []
 EVENTS_PROVIDER_API = "https://events.k3scluster.tech/api/events/"
 EVENTS_PROVIDER_TIMEOUT = 10
 EVENTS_PROVIDER_MAX_RETRIES = 3
+EVENTS_PROVIDER_TOKEN = (
+    "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9."
+    "eyJpc19zdGFmZiI6ZmFsc2UsInN1YiI6IjIxIiwiZXhwIjoxNzYzNDkwODA1LCJpYXQiOjE3"
+    "NjM0MDQ0MDV9.2ELnH0UlWOF93qIXg4Y05jf9UWrRhFCuLoIkYy_3XXS4Yzurnr0FCxv66O3V"
+    "z2ISfcyNqsV8qBXsnL9HEknzNfWPnK3BAuCyTh_aRpcvgBzRS4jggzQEPROguh9Qd0kVtlsk7"
+    "OF68fTy-qqnE3eUiXxPR-T7BYm18lZVYnzn7XyhV54KWloXRNGrvRybkmkIRMhpzunEW7dI9o"
+    "6w7St19ps9JsMf8cwWIeYnJFvaAYop2iTkeG40kYmhJA2Z4c0UfFBD45TFU5B7vMepLYH3Z71"
+    "Fo5c37v9pbgtATTnyXtmbfhulAmbo_j3PIKLTNLAUtcCXJtxqJKloIs2WUmCDng"
+)
 
 # Application definition
 

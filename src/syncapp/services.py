@@ -8,6 +8,7 @@ from django.utils.dateparse import parse_datetime
 
 logger = logging.getLogger(__name__)
 
+
 DEFAULT_TIMEOUT = getattr(settings, "EVENTS_PROVIDER_TIMEOUT", 10)
 MAX_RETRIES = getattr(settings, "EVENTS_PROVIDER_MAX_RETRIES", 3)
 BASE_URL = getattr(
@@ -20,10 +21,20 @@ BASE_URL = getattr(
 def _get_with_retries(url: str, params: dict = None) -> requests.Response:
     session = requests.Session()
     attempt = 0
+
+    headers = {}
+    if token := getattr(settings, "EVENTS_PROVIDER_TOKEN", None):
+        headers["Authorization"] = f"Bearer {token}"
+
     while True:
         try:
             attempt += 1
-            resp = session.get(url, params=params, timeout=DEFAULT_TIMEOUT)
+            resp = session.get(
+                url,
+                params=params,
+                headers=headers,
+                timeout=DEFAULT_TIMEOUT,
+            )
             resp.raise_for_status()
             return resp
         except requests.RequestException as exc:
