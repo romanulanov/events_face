@@ -9,8 +9,9 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date, parse_datetime
 
 from events.models import Event, Venue
-from syncapp.models import SyncResult
-from syncapp.services import _iter_events_from_provider, _parse_event_payload
+
+from ...models import SyncResult
+from ...services import _iter_events_from_provider, _parse_event_payload
 
 logger = logging.getLogger(__name__)
 

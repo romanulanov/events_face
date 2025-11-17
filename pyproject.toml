@@ -24,3 +24,19 @@ extend-select = ["I"]
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.poetry]
+name = "events-face"
+version = "0.1.0"
+description = ""
+authors = ["Roman Ulanov <gopomsk@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.32.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

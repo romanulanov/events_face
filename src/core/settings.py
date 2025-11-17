@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "authapp",
     "outbox",
+    "syncapp.apps.SyncappConfig",
 ]
 
 MIDDLEWARE = [
